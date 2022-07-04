@@ -15,15 +15,9 @@ with open('membership_list.csv') as csv_file:
 limit = int(sys.argv[1]) if len(sys.argv) > 1 else 3
 smtp_server = "smtp.gmail.com"
 port = 587  # For starttls
-sender_email = "mail@domain.com" # TODO: replace with your email address
-password = 'huasfafscasdfada'  # TODO: replace with your 16-digit-character password
-
-## Image
-## img_name = 'test.png' # TODO: replace your image filepath/name
-## with open(img_name, 'rb') as fp:
-## img = MIMEImage(fp.read())
-## img.add_header('Content-Disposition', 'attachment', filename=img_name)
-## msg.attach(img)
+sender_email = "sender@example.com"  # TODO: replace with your email address
+sender_name = 'Sender Name'  # TODO: replace with your name
+password = 'xxxJJJsss'  # TODO: replace with your 16-digit-character password
 
 ## Attachments in general
 ## Replace filename to your attachments. Tested and works for png, jpeg, txt, pptx, csv
@@ -40,22 +34,22 @@ def sendMail():
     # Send email here
     # initialise message instance
     msg = MIMEMultipart()
-    msg["Subject"] = "Test email notification 6 on {}".format(date.today().strftime("%Y-%m-%d"))
+    msg["Subject"] = "Test email notification 14 on {}".format(date.today().strftime("%Y-%m-%d"))
     msg["From"] = sender_email
-    html = """\
-        <html>
-          <body>
-            <p>Hi, {}<br>
-            <br>
-            This is an email to test variable values, e.g. your name at the initial greeting :) <br>
-            Thank you. <br>
-            </p>
-          </body>
-        </html>
-        """
-    body_html = MIMEText(html.format(row[0]), 'html')  # parse values into html text
+
+    with open('src/open_house_invite.html', 'r') as file:  # r to open file in READ mode
+        html = file.read()
+    body_html = MIMEText(html.format(row[0], sender_name, sender_name), 'html')  # parse values into html text
     msg.attach(body_html)  # attaching the text body into msg
     msg['To'] = row[1]
+
+    # Image
+    # img_name = 'src/mezcla.png'
+    # with open(img_name, 'rb') as fp:
+    #     img = MIMEImage(fp.read())
+    # img.add_header('Content-Disposition', 'attachment', filename=img_name)
+    # msg.attach(img)
+##
     server.sendmail(sender_email, row[1], msg.as_string())
 
 
